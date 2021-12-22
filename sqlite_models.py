@@ -3,7 +3,7 @@ import os
 import sqlite3
 from sqlite3.dbapi2 import Connection
 
-from .db_models import DatabaseModel, SessionModel, execute
+from db_models import DatabaseModel, SessionModel, execute
 
 
 def replacing_operators(sql, operators):
@@ -20,10 +20,10 @@ class Database(DatabaseModel):
 
     Basic usage:
 
-      >>> from database import Database
-      >>> my_database = Database(path='./path_to_file')
+      >> from sqlite_models import Database
+      >> my_database = Database(path='./path_to_file')
 
-    .. versionadded:: 1.0.0
+    .versionadded:: 1.0.0
 
     """
     ALTER_TABLE_FUNCTIONS = {'ADD', 'ALTER COLUMN', 'MODIFY COLUMN', 'MODIFY', 'DROP COLUMN'}
@@ -40,13 +40,8 @@ class Database(DatabaseModel):
         self._db_name = data_source
         self.__connection = None
 
-        # self.connection = sqlite3.connect(data_source)
-        # self.cursor = self.connection.cursor()
-
     def script(self, value):
-        cursor = self.connection.cursor()
-        cursor.executescript(value)
-        # self.commit()
+        self.connection.cursor().executescript(value)
 
     @property
     def db_name(self):
@@ -54,11 +49,18 @@ class Database(DatabaseModel):
 
     @property
     def connection(self) -> Connection:
+        """ This method return connection <Connection> with the database 
+        or ValueError in case of no database binding 
+        """
         if self.__connection is None:
             raise ValueError(f"")
         return self.__connection
 
     def connect(self, engine: str):
+        """ This method connecting t database
+
+        :param engine: type of database engine
+        """
         if engine == 'sqlite':
             self.__connection = sqlite3.connect(self._db_name)
 
