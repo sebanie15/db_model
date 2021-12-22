@@ -3,14 +3,8 @@ import os
 import sqlite3
 from sqlite3.dbapi2 import Connection
 
-from db_models import DatabaseModel, SessionModel, execute
-
-
-def replacing_operators(sql, operators):
-    for operator in operators:
-        sql = sql.replace("|", operator, 1)
-
-    return sql
+from .models.db_models import DatabaseModel, SessionModel
+from .utilities.utilities import execute, replacing_operators
 
 
 class Database(DatabaseModel):

@@ -2,21 +2,6 @@ import sqlite3
 from abc import ABC, abstractmethod
 
 
-
-def execute(db_name):
-    def wrapper(func):
-        con = sqlite3.connect(db_name)
-
-        def inner_wrapper(*args, **kwargs):
-            return func(*args, **kwargs)
-
-        con.commit()
-        con.close()
-        return inner_wrapper
-
-    return wrapper
-
-
 class TableModel(ABC):
     """ Abstract Table class """
     pass
